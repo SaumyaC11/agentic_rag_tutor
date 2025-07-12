@@ -44,23 +44,43 @@ def summary_generate(state: MyState):
     token_limit = 3000
 
     if len(joined_text) < token_limit:
-        summary_prompt = f"""Summarize the following document in 10-15 lines for a high-level overview:\n\n{joined_text}\n\nBe concise and informative."""
+        summary_prompt = f"""
+           You are an expert assistant tasked with summarizing study material.
+
+           Please generate a **detailed and structured summary** of the following content. 
+           Highlight important definitions, concepts, and examples where applicable. 
+           Avoid condensing too much—aim for clarity and depth.
+
+           Content:
+           {joined_text}
+           """
         response = get_llm().invoke(summary_prompt)
         return {"output": response.content if hasattr(response, "content") else response}
 
     partial_summaries = []
     for doc in relevant_chunks:
-        chunk_prompt = f"""Summarize the following text in 1-2 sentences:\n\n{doc.page_content}"""
+        chunk_prompt = f"""
+        Please summarize the following section in a **clear and informative** manner.
+        Focus on covering key definitions, concepts, and any technical terms.
+    
+        Section:
+        {doc.page_content}
+        """
         partial_response = get_llm().invoke(chunk_prompt)
         partial_summaries.append(partial_response.content if hasattr(partial_response, "content") else partial_response)
         time.sleep(1.5)
 
     combined_summary_text = "\n".join(partial_summaries)
-    final_prompt = f"""Combine the following short summaries into a single concise paragraph:\n\n{combined_summary_text}"""
+    final_prompt = f"""
+    You are a study assistant. Combine the following section-wise summaries into a **detailed overview** of the document. 
+    Maintain structure and include all key insights from the sections. Avoid limiting to a single paragraph.
+    
+    Section Summaries:
+    {combined_summary_text}
+    """
     final_response = get_llm().invoke(final_prompt)
-
     return {
-        "output": final_response.content if hasattr(final_response, "content") else final_response
+            "output": final_response.content if hasattr(final_response, "content") else final_response
     }
 
 
