@@ -16,7 +16,19 @@
   - 📝 **MCQ Mode**: Auto-generated multiple choice questions (A–D)
   - ✏️ **Short Answer Mode**: Conceptual questions with LLM-validated answers
 - 💬 **Chat Mode**: Ask freeform questions about the uploaded content
+- 📥 **Efficient Chunking**: Stream-based document loading for large files
 - 🧠 **Memory Buffer**: Keeps track of recent conversation context
+
+---
+
+## 🧠 Architecture
+
+- **Frontend**: Streamlit
+- **LLM Backend**: Groq API with `llama-3.3-70b-versatile`
+- **Vector Store**: FAISS
+- **Embeddings**: HuggingFace (`MiniLM`)
+- **Parsing & Chunking**: LangChain + `RecursiveCharacterTextSplitter`
+- **RAG Agent**: LangChain with LangGraph-style tool routing
 
 ---
 
@@ -37,8 +49,6 @@ Traditional RAG systems are powerful, but they often struggle with tasks like:
 | General Chat             | Uses LLM for default response    |
 | "Summarize this PDF"     | Activates `summary_generate`     |
 | "What is concept X?"     | Uses RAG via `rag_generate`      |
-
-This keeps the chatbot fluent, task-aware, and truly helpful in educational use cases.
 
 ---
 
