@@ -271,7 +271,7 @@ def main():
 
     except Exception:
         st.error("🚨 An unexpected error occurred.")
-        st.text(traceback.format_exc())
+        #st.text(traceback.format_exc())
 
 
 if __name__ == "__main__":
